@@ -33,26 +33,26 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  
+
   # settings to clean database after tests where js: true
   config.use_transactional_fixtures = false
 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
   end
- 
+
   config.before(:each) do
     DatabaseCleaner.strategy = :transaction
   end
- 
+
   config.before(:each, :js => true) do
     DatabaseCleaner.strategy = :truncation
   end
- 
+
   config.before(:each) do
     DatabaseCleaner.start
   end
- 
+
   config.after(:each) do
     DatabaseCleaner.clean
   end
@@ -77,15 +77,29 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
-
-  require 'capybara/poltergeist'
   require 'factory_girl_rails'
   require 'capybara/rspec'
+  require "selenium/webdriver"
+
+  Capybara.register_driver :chrome do |app|
+    Capybara::Selenium::Driver.new(app, browser: :chrome)
+  end
+
+  Capybara.register_driver :headless_chrome do |app|
+    capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+      chromeOptions: { args: %w(headless disable-gpu) }
+    )
+
+    Capybara::Selenium::Driver.new app,
+      browser: :chrome,
+      desired_capabilities: capabilities
+  end
+
+  Capybara.javascript_driver = :headless_chrome
 
   config.include Devise::Test::IntegrationHelpers, type: :feature
   config.include FactoryGirl::Syntax::Methods
   Capybara.default_max_wait_time = 10
-  Capybara.javascript_driver = :poltergeist
-  Capybara.server = :puma 
+  Capybara.server = :puma
 
 end
