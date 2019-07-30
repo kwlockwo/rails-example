@@ -51,7 +51,6 @@ group :development, :test do
   gem 'headless'
   gem 'capybara'
   gem 'capybara-selenium'
-  gem 'poltergeist'
   gem 'database_cleaner'
 end
 

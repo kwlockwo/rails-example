@@ -12,7 +12,7 @@
   "stack": "heroku-18",
   "environments": {
     "test": {
-      "addons": ["heroku-postgresql:in-dyno", "heroku-redis:in-dyno"],
+      "addons": ["heroku-postgresql:in-dyno"],
       "buildpacks": [
         {
           "url": "heroku/google-chrome",
