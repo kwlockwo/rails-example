@@ -9,5 +9,18 @@
       "url": "heroku/ruby"
     }
   ],
-  "stack": "heroku-18"
+  "stack": "heroku-18",
+  "environments": {
+    "test": {
+      "scripts": {
+        "test-setup": "bundle exec rake db:seed"
+      },
+      "addons": ["heroku-postgresql:in-dyno"],
+      "buildpacks": [
+        {"url": "heroku/google-chrome"},
+        {"url": "heroku/chromedriver"},
+        {"url": "heroku/ruby"}
+      ]
+    }
+  }
 }
